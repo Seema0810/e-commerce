@@ -3,7 +3,7 @@ import axios from "axios";
 import { ListGroup, Card, Button, Row, Col } from "react-bootstrap";
 import "../Css/singleproduct.css";
 import Review from "./Review";
-import Login from './Login';
+
 import { API_BASE_URL } from "../config";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
@@ -37,7 +37,7 @@ const SingleProduct = () => {
       console.log("Cart Button clicked");
       const res = await axios.post(`${API_BASE_URL}/api/cart`,JSON.stringify(body), {headers});
       console.log("response of cart is", res);
-      if(res.status===200){
+      if(res.status===200){        
       navigate("/cart");
     }
     }catch(error){
@@ -67,6 +67,7 @@ const SingleProduct = () => {
              <img
                src={product.image}
                style={{ height: "500px", width: "500px" }}
+               alt=""
              />
            </div>
            <div className="col-3">
@@ -143,5 +144,7 @@ const SingleProduct = () => {
     </>
   );
 };
+
+
 
 export default SingleProduct;

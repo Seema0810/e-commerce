@@ -2,26 +2,35 @@ import React, { useEffect, useState } from "react";
 import { Container, Col, Row, Card } from "react-bootstrap";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
-// import {useParams} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { UPDATE_CART } from "../redux/actions/types";
 
 const Cart = () => {
+  const dispatch= useDispatch();
   // let [quantity, setQuantity] = useState([]);
   const [addProducts, setAddProducts] = useState([]);
   const token = localStorage.getItem("token");
   console.log("token is ", token);
-  console.log("product quantity is ", addProducts);
+  // console.log("product quantity is ", addProducts);
   const headers = {
     "Content-Type": "application/json",
     Authorization: "Bearer " + token,
   };
+   
+  // const productToAdd=useSelector(state=>state.cartItems); 
+  // console.log("product to add in cart", productToAdd);
 
-  // const body ={
-  //   // quantity:quantity,
-  //     }
+
   const getProductDetail = async () => {
     const res = await axios.get(`${API_BASE_URL}/api/cart`, { headers });
+    console.log("cart response of product", res.data);
     if (res.status === 200) {
+      // setAddProducts(res.data.cart.products);
+      // localStorage.setItem("cart", res.data.cart.products);
+      dispatch({ type: UPDATE_CART, payload: res.data.cart.products });
       setAddProducts(res.data.cart.products);
+      localStorage.setItem("cart", JSON.stringify(res.data.cart.products));
       console.log("cart product details is", res.data.cart.products);
     }
   };
@@ -68,17 +77,17 @@ const Cart = () => {
     }
   };
   // getting the updated cart
-  const getUpdatedCart = async () => {
-    try {
-      const res = await axios.get(`${API_BASE_URL}/api/cart`, { headers });
-      if (res.status === 200) {
-        console.log("updated cart is", res.data);
-        // setAddProducts(res.data)
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getUpdatedCart = async () => {
+  //   try {
+  //     const res = await axios.get(`${API_BASE_URL}/api/cart`, { headers });
+  //     if (res.status === 200) {
+  //       console.log("updated cart is", res.data);
+  //       // setAddProducts(res.data)
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   //Decrease the item
   const handleDecrease = async (productId) => {
@@ -197,12 +206,12 @@ const Cart = () => {
                   Subtotal({getTotalItems()}items):${getTotalAmount()}
                 </p>
                 <hr />
-                <button
+                <Link to="/shipping"><button
                   type="button"
                   className="btn p-0 w-50 btn-warning border-primary"
                 >
                   Proceed to Checkout
-                </button>
+                </button></Link>
               </Card.Body>
             </Card>
           </Col>

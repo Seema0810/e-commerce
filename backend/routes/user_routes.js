@@ -90,11 +90,49 @@ router.put("/api/Customer/:id", auth, async (req, res) => {
       return res.status(404).json({ message: "Customer not found" });
     }
 
-    res.status(200).json({Customer:Customer});
+    res.status(200).json({customer:this.callerustomer});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
+});
+
+//creating an endpoint for shipping details
+router.post("/shipping", auth, async(req, res)=>{
+  try{const {name, address}= req.body;
+  console.log("Shipping details are", name, address);
+
+   // Check if both fullName and address are present in the request body
+   if (!name || !address) {
+    return res.status(400).json({ message: "FullName and address are required in the request body" });
+  }
+  const shippedCustomer=await Customer.findByIdAndUpdate({_id:req.user._id},
+    {$set:{address:address,
+    name:name},
+  },
+  {new:true, select: '-password'});  //excluding the password field
+  console.log("shipped customer is", shippedCustomer);
+  res.status(200).json(shippedCustomer);
+}
+  catch(error){
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+
+})
+
+//creating an endpoint for shipping details
+router.get("/shipping", auth, async(req, res)=>{
+  try{ // Check if both fullName and address are present in the request body
+    const shippedCustomer=await Customer.findOne({_id:req.user._id}).select('-password') 
+  console.log("shipped customer is", shippedCustomer);
+  res.status(200).json(shippedCustomer);
+}
+  catch(error){
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+
 });
 
 module.exports= router;

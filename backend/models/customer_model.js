@@ -29,6 +29,7 @@ const CustomerSchema = new mongoose.Schema({
     type: Boolean,
     default: false, // Set the default value to false
   },
+  
 
 
 },{ timestamps: true });

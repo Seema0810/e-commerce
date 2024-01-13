@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 const Payment = () => {
   return (
@@ -29,7 +30,7 @@ const Payment = () => {
           Stripe
         </label>
       </div>
-      <Button type="submit" className="btn btn-warning mt-3"  style={{marginLeft:"40%"}}  >Continue</Button>
+      <Link to="/order"><Button type="submit" className="btn btn-warning mt-3"  style={{marginLeft:"40%"}}  >Continue</Button></Link>
       <p className="mt-4" style={{marginLeft:"40%"}}><b>All rights reserved</b> </p>
     </>
   );

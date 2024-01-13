@@ -8,9 +8,17 @@ import {
 import Dropdown from "react-bootstrap/Dropdown";
 import { Container, Row, Col, Nav, Navbar, NavDropdown, Button, Form, InputGroup } from "react-bootstrap";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import { useSelector } from "react-redux";
 
-const Header = () => {
+const Header = () => {  
+  const navigate= useNavigate();
+  const addProducts = useSelector((state) => state.cart.cartItems);
+  console.log("cart icons products are", addProducts);
+  const handleCart= ()=>{
+    navigate('/cart');
+  }
+  
   return (
     <>
       <Container fluid>
@@ -54,7 +62,7 @@ const Header = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav" className="navlink-style">
               <Nav className="me-auto">
-                <Nav.Link href="#home">cart</Nav.Link>                
+                <Nav.Link href="#home" ><button className=" border border-o" onClick={handleCart}><i className="fa-solid fa-cart-shopping"></i></button></Nav.Link>                
                 <NavDropdown title="Basir" id="basic-nav-dropdown">
                   <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.2">

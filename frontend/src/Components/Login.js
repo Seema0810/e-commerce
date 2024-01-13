@@ -4,6 +4,7 @@ import { useState } from 'react';
 import {Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 
+
 const Login = () => {
   const [credentials, setCredentials] = useState({
     email: '',
@@ -11,6 +12,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,6 +35,12 @@ const Login = () => {
         console.log('Login successful', response.data);
       localStorage.setItem("token", response.data.result.token);
         // Navigate to the desired page upon successful login
+        // After successful login
+// const storedProduct = JSON.parse(localStorage.getItem('pendingProduct'));
+// if (storedProduct) {
+//   dispatch(addToCart(storedProduct));
+//   localStorage.removeItem('pendingProduct');
+// }
         
         navigate('/cart');
       }
