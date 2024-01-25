@@ -2,7 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/products_models");
-// const auth = require("../middleware/protectedresource");
+const auth = require("../middleware/protectedresource");
+const { upload } = require("../routes/file_routes");
 
 // Seed products
 router.post("/seedProducts", async (req, res) => { 
@@ -190,6 +191,72 @@ try
  }
 
 
-})
+});
 
+//creating an endpoint to search the items
+router.get('/search', async (req, res) => {
+  try {
+    const keyword = req.query.keyword; //Query parameters are often used in URLs to provide additional information to the server.
+
+    if (!keyword) {
+      return res.status(400).json({ error: 'Keyword is required' });
+    }
+
+    // Use a case-insensitive regex to search for products containing the keyword in the name
+    const regex = new RegExp(keyword, 'i');
+
+    const products = await Product.find({ title: regex });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error searching products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// creating the endpoint to add a product
+router.post("/addproduct", auth, upload.single("file"), async (req, res) => {
+  console.log("The content and image is", req.body, req.file);
+  const { title, price, description} = req.body;
+  const file = req.file;
+
+  if (!title || !file || !price || !description) {
+    return res.status(400).json({ error: "one or more field are empty" });
+  }
+  try {
+    const product = new Product({
+     title:title,
+      image: file.filename,
+      description:description,
+      price:price
+    });
+    const newProduct = await product.save();
+    if (newProduct) {
+      res.status(200).json({ message: "Product is ", product: newProduct });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
+  }
+});
+
+// creating an endpoint to delete a product using productId
+
+router.delete("/deleteproduct/:productId", auth, async(req,res)=>{
+  try {
+    const { productId } = req.params;
+    console.log("productId is ", productId);
+    const deletedProduct = await Product.findByIdAndDelete({ _id: productId });
+
+    if (!deletedProduct) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    console.log("Deleted product:", deletedProduct);
+    res.status(200).json(deletedProduct);
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 module.exports = router;

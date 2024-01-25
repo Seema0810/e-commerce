@@ -30,7 +30,7 @@ const Cart = () => {
       // localStorage.setItem("cart", res.data.cart.products);
       dispatch({ type: UPDATE_CART, payload: res.data.cart.products });
       setAddProducts(res.data.cart.products);
-      localStorage.setItem("cart", JSON.stringify(res.data.cart.products));
+ 
       console.log("cart product details is", res.data.cart.products);
     }
   };
@@ -206,7 +206,7 @@ const Cart = () => {
                   Subtotal({getTotalItems()}items):${getTotalAmount()}
                 </p>
                 <hr />
-                <Link to="/shipping"><button
+                <Link to="/shipping" ><button
                   type="button"
                   className="btn p-0 w-50 btn-warning border-primary"
                 >

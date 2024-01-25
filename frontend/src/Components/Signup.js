@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { API_BASE_URL } from "../config";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
   const [customer, setCustomer] = useState({
@@ -26,17 +28,20 @@ const Signup = () => {
         "Content-Type": "application/json",
       };
       const res = await axios.post(`${API_BASE_URL}/signup`, JSON.stringify(customer), {headers});
-      if (res.status === 200) {
-        console.log("registration successfull");
+      console.log("registration status", res.status);
+      if (res.status === 200) {        
+        toast.success("Registration successful. Please log in.");
         navigate("/login");
       }
     } catch (error) {
       console.log("registration error is", error.response);
+      toast.error("Registration failed. Please try again.");
     }
   };
 
   return (
     <>
+     
       <div className="container">
         <div className="row signup-style mt-5 ">
           <div className="col-5 mx-auto register-background">
@@ -88,7 +93,7 @@ const Signup = () => {
               <button
                 type="submit"
                 className="signup-button d-block rounded-5"
-              >
+                              >
                 Sign Up
               </button>
               <p className="mt-2 ml-5 click-here-style">

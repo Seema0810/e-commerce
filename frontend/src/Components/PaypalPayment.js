@@ -1,11 +1,18 @@
 import { PayPalButtons } from '@paypal/react-paypal-js';
 import React from 'react'
+import { API_BASE_URL } from '../config';
 
-const PaypalPayment = () => {
-  const serverUrl="http://localhost:5000"
+const PaypalPayment = ({orderItems}) => {
+  // Construct the cart array dynamically based on the actual items in the user's cart
+const cart = orderItems.map(item => ({
+  sku: 1550,
+  quantity: 2, // Assuming quantity should be a string
+}));
+
+
     const createOrder = (data) => {
         // Order is created on the server and the order id is returned
-        return fetch(`${serverUrl}/my-server/create-paypal-order`, {
+        return fetch(`${API_BASE_URL}/my-server/create-paypal-order`, {
           method: "POST",
            headers: {
             "Content-Type": "application/json",
@@ -13,12 +20,7 @@ const PaypalPayment = () => {
           // use the "body" param to optionally pass additional order information
           // like product skus and quantities
           body: JSON.stringify({
-            cart: [
-              {
-                sku: "YOUR_PRODUCT_STOCK_KEEPING_UNIT",
-                quantity: "YOUR_PRODUCT_QUANTITY",
-              },
-            ],
+            cart,
           }),
         })
         .then((response) => response.json())
@@ -26,7 +28,7 @@ const PaypalPayment = () => {
       };
       const onApprove = (data) => {
          // Order is captured on the server and the response is returned to the browser
-         return fetch("/my-server/capture-paypal-order", {
+         return fetch(`${API_BASE_URL}/my-server/capture-paypal-order`, {
           method: "POST",
            headers: {
             "Content-Type": "application/json",

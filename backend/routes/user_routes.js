@@ -56,13 +56,46 @@ router.post("/login", async (req, res) => {
     const passwordMatch = await bcryptjs.compare(password, CustomerInDB.password); //  comparing the password with the password already in database
     if (passwordMatch) {
       const jwtToken = jwt.sign({ _id: CustomerInDB._id }, process.env.JWT_SECRET); // Creating the token
-      const CustomerInfo = { email: CustomerInDB.email, _id: CustomerInDB._id };
+      const CustomerInfo = { email: CustomerInDB.email, _id: CustomerInDB._id, isAdmin:CustomerInDB.isAdmin };
       res.status(200).json({ result: { token: jwtToken, Customer: CustomerInfo } });
     } else {
       return res.status(401).json({ error: "invalid credentials " });
     }
   } catch (error) {
     console.log(error);
+  }
+});
+// creating an endpoint for seed admin
+router.post("/seedadmin", async (req, res) => {
+  try{
+    const admin={     
+       name:"John Doe", 
+       email:"johndoe@gmail.com",
+       password:"JohnDoe@123",
+       confirmPassword:"JohnDoe@123", 
+       isAdmin:true   
+    }
+    if (!admin.name || !admin.email || !admin.password || !admin.confirmPassword || !admin.isAdmin) {
+      return res.status(400).json({ error: "one or more field are empty" });
+    }
+    let hashedPassword;
+    if(admin.password===admin.confirmPassword){
+      hashedPassword = await bcryptjs.hash(admin.password, 16); // encrypting the password using bcryptjs library
+    } else{
+      console.log("password don't match");
+    }
+    // Store the hashed password in the admin object
+    admin.password = hashedPassword;
+
+   const createdAdmin=await Customer.create(admin);
+   res.status(200).json(admin);
+   console.log("Admin is", admin );
+  }
+ 
+  catch(error){
+    res.status()
+    console.log("error in signup", error);
+    res.status(400).json({ error: "Internal Server Error" });
   }
 });
 

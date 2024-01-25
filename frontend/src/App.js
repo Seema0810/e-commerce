@@ -9,18 +9,22 @@ import Signup from './Components/Signup';
 import Payment from './Components/Payment';
 import Shipping from './Components/Shipping';
 import Order from './Components/Order';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { UPDATE_CART } from './redux/actions/types';
+import AdminProduct from './Components/AdminProduct';
+import SearchPage from './Components/SearchPage';
+import ProductInfo from './Components/ProductInfo';
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {
   function DynamicRouting() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const updatedCart = useSelector(state => state.cart);
+    // const updatedCart = useSelector(state => state.cart);
 
     useEffect(() => {
 
@@ -42,15 +46,21 @@ function App() {
       <Route  path="/choosepayment" element={<Payment/>}/>        
       <Route  path="/shipping" element={<Shipping/>}/>    
       <Route  path="/order" element={<Order/>}/>
+      <Route  path="/adminproduct" element={<AdminProduct/>}/>
+      <Route  path="/search" element={<SearchPage/>}/>
+      <Route  path="/productinfo" element={<ProductInfo/>}/>
+      
   </Routes>
     )
   }
 
-  return (    
-    <Router>
+  return ( <>  
+    <Router>      
+    <ToastContainer/>
     <Header/>
     <DynamicRouting/>
     </Router>
+    </> 
   
   );
 }

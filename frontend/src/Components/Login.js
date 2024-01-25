@@ -34,15 +34,14 @@ const Login = () => {
       if (response.status === 200) {
         console.log('Login successful', response.data);
       localStorage.setItem("token", response.data.result.token);
-        // Navigate to the desired page upon successful login
-        // After successful login
-// const storedProduct = JSON.parse(localStorage.getItem('pendingProduct'));
-// if (storedProduct) {
-//   dispatch(addToCart(storedProduct));
-//   localStorage.removeItem('pendingProduct');
-// }
-        
-        navigate('/cart');
+        const isAdmin= response.data.result.Customer.isAdmin;
+        console.log("value of isAdmin", isAdmin);
+        if(isAdmin){
+          navigate('/adminproduct');
+        }else        
+        {
+          navigate('/cart');
+        }
       }
     } catch (error) {
       console.error('Login error:', error.response);

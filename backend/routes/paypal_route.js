@@ -44,28 +44,31 @@ const generateAccessToken = async () => {
 * Create an order to start the transaction.
 * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
 */
-const createOrder = async (cart) => {
+const createOrder = async (data) => {
   // use the cart information passed from the front-end to calculate the purchase unit details
   console.log(
     "shopping cart information passed from the frontend createOrder() callback:",
-    cart,
+    data,
   );
   
   const accessToken = await generateAccessToken();
+  
   const url = `${base}/v2/checkout/orders`;
   const payload = {
     intent: "CAPTURE",
+    // cart:data,
+
     purchase_units: [
       {
         amount: {
           currency_code: "USD",
-          value: "100.00",
+          value: 50,
         },
       },
     ],
   };
   
-  const response = await fetch(url, {
+  const response = await fetch("/api/createorder", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
@@ -101,8 +104,7 @@ const captureOrder = async (orderID) => {
       // "PayPal-Mock-Response": '{"mock_application_codes": "TRANSACTION_REFUSED"}'
       // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
     },
-  });
-  
+  });  
   return handleResponse(response);
 };
   
@@ -119,7 +121,7 @@ async function handleResponse(response) {
   }
 }
   
-app.post("/api/orders", async (req, res) => {
+app.post("/my-server/create-paypal-order*", async (req, res) => {
   try {
     // use the cart information passed from the front-end to calculate the order amount detals
     const { cart } = req.body;

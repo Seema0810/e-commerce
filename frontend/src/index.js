@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux'; //The Provider component from react-redux wraps your entire React application and provides the Redux store to all components.
 import store from './redux/store';
 
+//  store.subscribe(() => console.log(store.getState()));    
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>  

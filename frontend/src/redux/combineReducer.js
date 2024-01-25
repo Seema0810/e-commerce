@@ -3,6 +3,7 @@ import cartReducer from './reducer';
 
 const rootReducer = combineReducers({
   cart: cartReducer,
+  
   // other reducers...
 });
 

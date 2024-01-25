@@ -4,8 +4,10 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors= require("cors");
+const { downloadFile } =require('./routes/file_routes') ;
 // const bodyParser = require('body-parser');
 
+global.__basedir = __dirname;
 
 const port = process.env.PORT;
 // connecting the node with the database server using mongoose
@@ -27,10 +29,12 @@ require('./models/cart_models')// registering the Cart Model
 
 app.use(cors());             //allow controlled access to resources on a different domain
 app.use(express.json());
-
+// route to download the file
+app.get("/files/:filename", downloadFile);
 app.use(require('./routes/user_routes')); //user routes
 app.use(require('./routes/seedProduct_routes'));// Products routes
 app.use(require('./routes/cart_routes')); // cart routes
+app.use(require('./routes/order_routes')); // order routes
 
 // Start the server
 app.listen(port, () => {

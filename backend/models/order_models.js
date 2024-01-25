@@ -12,10 +12,19 @@ const orderSchema = new mongoose.Schema({
         ref: 'User',                        // Use the model name 'User' here
         required: true
     },
-    products:{
-        type:Schema.Types.ObjectId,
-        ref:'Product'                         // Use the model name 'Product' here
-    }
+    products: [
+        {
+            productRef: {
+                type: Schema.Types.ObjectId,
+                ref: 'Product',
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true
+            }
+        }
+    ]
 
   // You can add more fields as needed
 });
