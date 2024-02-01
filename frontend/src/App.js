@@ -10,30 +10,33 @@ import Payment from './Components/Payment';
 import Shipping from './Components/Shipping';
 import Order from './Components/Order';
 // import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { UPDATE_CART } from './redux/actions/types';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { useEffect } from 'react';
+// import { UPDATE_CART } from './redux/actions/types';
 import AdminProduct from './Components/AdminProduct';
 import SearchPage from './Components/SearchPage';
 import ProductInfo from './Components/ProductInfo';
 import { ToastContainer } from 'react-toastify';
+import Orderhistory from './Components/Orderhistory';
+import Adminorder from './Components/Adminorder';
+
 
 
 function App() {
   function DynamicRouting() {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     // const navigate = useNavigate();
 
     // const updatedCart = useSelector(state => state.cart);
 
-    useEffect(() => {
+    // useEffect(() => {
 
-      const updatedCart = JSON.parse(localStorage.getItem("updatedCart"));
-      if (updatedCart) {//when user has a login active session
-        dispatch({ type: UPDATE_CART, payload: updatedCart });
-        // navigate("/posts");
-      }
-    }, []);
+    //   const updatedCart = JSON.parse(localStorage.getItem("updatedCart"));
+    //   if (updatedCart) {//when user has a login active session
+    //     dispatch({ type: UPDATE_CART, payload: updatedCart });
+    //     // navigate("/posts");
+    //   }
+    // }, []);
 
     return (
       <Routes>
@@ -49,18 +52,24 @@ function App() {
       <Route  path="/adminproduct" element={<AdminProduct/>}/>
       <Route  path="/search" element={<SearchPage/>}/>
       <Route  path="/productinfo" element={<ProductInfo/>}/>
+      <Route  path="/orderhistory" element={<Orderhistory/>}/>
+      <Route  path="/adminorder" element={<Adminorder/>}/>
       
   </Routes>
     )
   }
 
-  return ( <>  
+  return (
+   
+      <>
     <Router>      
     <ToastContainer/>
     <Header/>
     <DynamicRouting/>
     </Router>
     </> 
+   
+   
   
   );
 }

@@ -1,56 +1,107 @@
-import { PayPalButtons } from '@paypal/react-paypal-js';
-import React from 'react'
-import { API_BASE_URL } from '../config';
+// import { PayPalButtons } from '@paypal/react-paypal-js';
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import React, { useState } from "react";
+import { API_BASE_URL } from "../config";
+// import { useState } from 'react';
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { CLEAR_CART } from "../redux/actions/types";
+import { useDispatch } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
 
-const PaypalPayment = ({orderItems}) => {
+const PaypalPayment = ({ orderItems }) => {
+  const navigate = useNavigate();
+  const dispatch= useDispatch();
+  const [paidFor, setPaidFor] = useState("");
   // Construct the cart array dynamically based on the actual items in the user's cart
-const cart = orderItems.map(item => ({
-  sku: 1550,
-  quantity: 2, // Assuming quantity should be a string
-}));
+  const products = orderItems;
 
+  //getting the total amount of all product
+  const getTotalAmount = () => {
+    return products
+      .reduce((total, product) => {
+        return total + product.productRef.price * product.quantity;
+      }, 0)
+      .toFixed(2);
+  };
 
-    const createOrder = (data) => {
-        // Order is created on the server and the order id is returned
-        return fetch(`${API_BASE_URL}/my-server/create-paypal-order`, {
-          method: "POST",
-           headers: {
-            "Content-Type": "application/json",
-          },
-          // use the "body" param to optionally pass additional order information
-          // like product skus and quantities
-          body: JSON.stringify({
-            cart,
-          }),
-        })
-        .then((response) => response.json())
-        .then((order) => order.id);
-      };
-      const onApprove = (data) => {
-         // Order is captured on the server and the response is returned to the browser
-         return fetch(`${API_BASE_URL}/my-server/capture-paypal-order`, {
-          method: "POST",
-           headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            orderID: data.orderID
-          })
-        })
+  // calculating the total amount
+  const orderAmount = getTotalAmount();
 
-        .then((response) => {
-          console.log("Payment successfull");
-          return response.json()
-        }).then((data)=>console.log(data));
-      };
+  const totalAmount =
+    parseFloat(orderAmount) + (18 / 100) * parseFloat(orderAmount);
+
+  const handleApprove = async (paymentId) => {
+    const token = localStorage.getItem("token");
+    console.log("token is ", token);
+    const body = {
+      products,
+      paymentId: paymentId,
+      amount: totalAmount,
+    };
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    };
+    //calling backend server function to fulfil the order
+
+    try {
+      const res = await axios.post(`${API_BASE_URL}/api/createorder`, body, {
+        headers,
+      });
+      console.log("response is" , res.data);
+      if (res.status === 200) {
+        console.log("response on paypal payment");
+        setPaidFor("paid");       
+       
+       
+      }
+    } catch (error) {
+      console.error("Error capturing order:", error);
+      // Handle error (e.g., show an error message to the user)
+    }
+    //refresh user's account and the subscription status
+
+    if (paidFor=="paid") {
+      console.log("Cart is cleared");
+      dispatch({ type: CLEAR_CART }); // Dispatch the clearCart action here
+      //display the success message
+      toast.success("thank you for your purchase");
+      navigate("/");
+    }
+  };
   return (
     <>
-      <PayPalButtons
-      createOrder={(data, actions) => createOrder(data, actions)}
-      onApprove={(data, actions) => onApprove(data, actions)}
-    />
-    </>
-  )
-}
+      {console.log("paypay payment", products)}
 
-export default PaypalPayment
+      <PayPalScriptProvider
+        options={{ clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID }}
+      >
+        <PayPalButtons
+          createOrder={(data, actions) => {
+            console.log("paypay payment0", products);
+            return actions.order.create({
+              purchase_units: products.map((item) => ({
+                description: item.productRef.title,
+                amount: {
+                  currency_code: "USD",
+                  value: (item.quantity * item.productRef.price).toFixed(2),
+                },
+              })),
+            });
+          }}
+          onApprove={async (data, actions) => {
+            const order = await actions.order.capture();
+            console.log("order", order);
+
+            handleApprove(data.orderID);
+          }}
+        />
+      </PayPalScriptProvider>
+    </>
+  );
+};
+
+export default PaypalPayment;

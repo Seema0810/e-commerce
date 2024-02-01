@@ -215,7 +215,7 @@ router.get('/search', async (req, res) => {
 });
 
 // creating the endpoint to add a product
-router.post("/addproduct", auth, upload.single("file"), async (req, res) => {
+router.post("/addproduct", auth, upload.single("file"), async (req,res) => {
   console.log("The content and image is", req.body, req.file);
   const { title, price, description} = req.body;
   const file = req.file;
@@ -226,7 +226,7 @@ router.post("/addproduct", auth, upload.single("file"), async (req, res) => {
   try {
     const product = new Product({
      title:title,
-      image: file.filename,
+      image: `/uploads/${file.filename}`, // Construct the URL
       description:description,
       price:price
     });

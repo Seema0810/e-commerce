@@ -28,19 +28,23 @@ const AdminProduct = () => {
   }, []);
 
   const handleDelete = async (productId) => {
-    try{
-   const res= await axios.delete(`${API_BASE_URL}/deleteproduct/${productId}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-    if(res.status===200){
-      console.log("product is deleted successfully", res);
+    try {
+      const res = await axios.delete(
+        `${API_BASE_URL}/deleteproduct/${productId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      if (res.status === 200) {
+        console.log("product is deleted successfully", res);
+        getAllProducts();
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }catch(error){
-    console.log(error);
-  }
   };
   return (
     <>
@@ -59,6 +63,21 @@ const AdminProduct = () => {
           Add Product
         </Button>
       </Link>
+      <Link to="/adminorder">
+        <Button
+          style={{
+            marginTop: "15rem",
+            marginLeft: "68rem",
+            position: "fixed",
+            width: "8.5rem",
+            borderTopLeftRadius: "5rem",
+          }}
+          variant="dark"
+          className="btn-md"
+        >
+          View Orders
+        </Button>
+      </Link>
       <Container>
         <Row className="mt-5">
           <Col md={10} className="mx-5">
@@ -70,13 +89,10 @@ const AdminProduct = () => {
                     <Row>
                       <Col md={6} className="d-inline-flex">
                         <img
-                          src={
-                            product.image
-                              // ? product.image
-                              // : "http://localhost:5000/files/" + product.image
-                          }
-                          className="border border-2 p-2 img-fluid rounded "
+                          src={product.image.startsWith('http') ? product.image : `${API_BASE_URL}${product.image}`}
+                          className="border border-2 p-2 img-fluid rounded"
                           style={{ height: "8rem", width: "8rem" }}
+                          alt=""
                         />
                         <a
                           href="/"

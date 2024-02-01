@@ -15,7 +15,7 @@ const Payment = () => {
           value=""
           id="flexCheckDefault"
         />
-        <label className="form-check-label " for="flexCheckDefault">
+        <label className="form-check-label " htmlFor="flexCheckDefault">
           Paypal
         </label>
       </div>
@@ -26,7 +26,7 @@ const Payment = () => {
           value=""
           id="flexCheckDefault"
         />
-        <label className="form-check-label " for="flexCheckDefault">
+        <label className="form-check-label " htmlFor="flexCheckDefault">
           Stripe
         </label>
       </div>

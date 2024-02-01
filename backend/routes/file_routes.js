@@ -10,8 +10,12 @@ const storage= multer.diskStorage({
     destination:(req, file, cb)=>{          //this destination fuction is used to determine within which folder file should be uploaded 
         cb(null, 'uploads/')                //  with this command uploads folder will be created
     },
-    filename:(req, file,cb)=>{              //is used to determine what the file should be named inside the folder
-        cb(null, file.originalname);
+
+    // this line of code is taken from the chatgpt so that i can store the image url in database
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const fileExtension = file.originalname.split('.').pop();
+        cb(null, `${uniqueSuffix}.${fileExtension}`);
     }
 });
 

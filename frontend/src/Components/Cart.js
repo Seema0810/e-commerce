@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Container, Col, Row, Card } from "react-bootstrap";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { UPDATE_CART } from "../redux/actions/types";
+import {  toast } from "react-toastify";
 
 const Cart = () => {
   const dispatch= useDispatch();
+  const navigate= useNavigate();
   // let [quantity, setQuantity] = useState([]);
   const [addProducts, setAddProducts] = useState([]);
   const token = localStorage.getItem("token");
@@ -25,13 +27,17 @@ const Cart = () => {
   const getProductDetail = async () => {
     const res = await axios.get(`${API_BASE_URL}/api/cart`, { headers });
     console.log("cart response of product", res.data);
-    if (res.status === 200) {
-      // setAddProducts(res.data.cart.products);
-      // localStorage.setItem("cart", res.data.cart.products);
+    if (res.status === 200 && res.data.cart && res.data.cart.products) {
+      // Check if res.data.cart and res.data.cart.products are not null/undefined
       dispatch({ type: UPDATE_CART, payload: res.data.cart.products });
       setAddProducts(res.data.cart.products);
- 
+
       console.log("cart product details is", res.data.cart.products);
+    } else {
+      toast.error("NO item is in the cart");
+      navigate('/cart');
+      // Handle the case where the response does not have the expected structure
+      console.error("Invalid response structure from the server");
     }
   };
   useEffect(() => {
@@ -153,6 +159,7 @@ const Cart = () => {
                           src={product.productRef.image}
                           className="border border-2 p-2 img-fluid "
                           style={{ height: "5.5rem", width: "4.5rem" }}
+                          alt=""
                         />
                         <a
                           href="/"

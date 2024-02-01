@@ -25,8 +25,11 @@ const Women = () => {
   }, []);
 
   return (
+   
     <div>
+
       {" "}
+    
       <div
         className="bg-light container-fluid product-page-m"
         style={{ marginTop: "5rem" }}

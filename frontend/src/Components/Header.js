@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "../Css/header.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCartShopping,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+//   faCartShopping,
+//   faMagnifyingGlass,
+// } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
   Container,
@@ -12,7 +12,7 @@ import {
   Col,
   Nav,
   Navbar,
-  NavDropdown,
+ 
   Button,
   Form,
   InputGroup,
@@ -22,26 +22,25 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { API_BASE_URL } from "../config";
 import axios from "axios";
-import SearchPage from "./SearchPage";
+// import SearchPage from "./SearchPage";
 
 const Header = () => {
   const [searchItem, setSearchItem] = useState();
   const [searchedProducts, setSearchedProducts] = useState([]);
+  const token= localStorage.getItem("token");
   const navigate = useNavigate();
   const addProducts = useSelector((state) => state.cart.cartItems);
   localStorage.setItem("cart", addProducts);
   console.log("cart icons products are", addProducts);
 
-  //finding the total no. of items in cart
-  const totalItemsInCart=()=>{
-    return addProducts.reduce((total, product)=>{
-      return total+ product.reduce((productTotal, item)=>{
-        return productTotal+ item.quantity; 
-      },0)
-    },0)
-  }
+  // getting the total no. of items
+  const getTotalItems = () => {
+    return addProducts.reduce((total, product) => {
+      return total + product.quantity;
+    }, 0);
+  };
 
-  const itemsInCart= totalItemsInCart();
+  const itemsInCart= getTotalItems();
   const handleCart = () => {
     navigate("/cart");
   };
@@ -83,7 +82,7 @@ const Header = () => {
 
         <Row>
           <Navbar expand="lg" className="bg-body-tertiary fixed-top">
-            <Col xs={6} md={2}>
+            <Col xs={12} md={2}>
               <Dropdown
                 className=" nav-image d-inline-flex "
                 // style={{display:"inline-flex",position:"fixed"}}
@@ -93,6 +92,7 @@ const Header = () => {
                     src="https://image.freepik.com/free-icon/menu-button-of-three-lines_318-70878.jpg"
                     className="border border-0 mx-2"
                     style={{ height: "30px", width: "25px" }}
+                    alt="three"
                   />
                 </Dropdown.Toggle>
 
@@ -126,9 +126,14 @@ const Header = () => {
             </Col>
 
             <Col xs={6} md={6}>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Toggle aria-controls="basic-navbar-nav" className="position-absolute top-0 end-0 mt-1"/>
               <Navbar.Collapse id="basic-navbar-nav" className="navlink-style">
                 <Nav className="mx-auto ">
+                <Nav.Link href="/orderhistory">
+                    <button className=" border border-o " onClick={handleCart}>
+                     History 
+                    </button>
+                  </Nav.Link>
                   <Nav.Link href="/cart">
                     <div>
                     <span className="cartTotal">{itemsInCart?itemsInCart:""}</span>
@@ -145,7 +150,7 @@ const Header = () => {
                   </Nav.Link>
                   <Nav.Link href="/login">
                   <button className=" border border-o " onClick={handleLogout}>
-                     Logout
+                     {token && "Logout"}
                     </button>
                     </Nav.Link>
                 </Nav>

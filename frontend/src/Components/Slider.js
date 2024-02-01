@@ -41,16 +41,16 @@ const Slider = () => {
                   <img src={product.image} className="card-img-top" alt="..." />
                   <div className="card-body">
                     <h6 className="card-title text-center text-primary">
-                      {product.title.slice(0,20)}
+                      {product.title.slice(0, 20)}
                     </h6>
                     <div className="card-text">
                       <p>
                         {" "}
-                        <i class="fa-solid fa-star text-warning"></i>
-                        <i class="fa-solid fa-star text-warning"></i>
-                        <i class="fa-solid fa-star text-warning"></i>
-                        <i class="fa-solid fa-star text-warning"></i>
-                        <i class="fa-solid fa-star text-warning"></i>
+                        <i className="fa-solid fa-star text-warning"></i>
+                        <i className="fa-solid fa-star text-warning"></i>
+                        <i className="fa-solid fa-star text-warning"></i>
+                        <i className="fa-solid fa-star text-warning"></i>
+                        <i className="fa-solid fa-star text-warning"></i>
                         <span className="text-danger mx-1">5.3 reviews</span>
                       </p>
                       <p className="float-start ">
