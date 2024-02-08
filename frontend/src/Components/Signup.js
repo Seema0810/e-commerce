@@ -44,7 +44,7 @@ const Signup = () => {
      
       <div className="container">
         <div className="row signup-style mt-5 ">
-          <div className="col-5 mx-auto register-background">
+          <div className="col-md-5 col-xs-12 mx-auto register-background">
             <h3 className="text-center text-dark mt-5">
               <b>Register</b>
             </h3>

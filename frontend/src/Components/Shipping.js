@@ -3,6 +3,7 @@ import{ Button, Form }from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
+import "../Css/form.css";
 
 const Shipping = () => {
     const [shippingDetails, setShippingDetails]= useState({fullName:"", address:"", city:"", postalcode:"", country:""});
@@ -47,25 +48,25 @@ const Shipping = () => {
     <>    
     <h1 className='text-center' style={{marginTop:"5rem"}}>Shipping Address</h1>
 <Form onSubmit={handleShippingSubmit}>
-      <Form.Group className="mb-3 mt-4 w-25 mx-auto"  controlId="exampleForm.ControlInput1">
+      <Form.Group className="mb-3 mt-4 w-25 mx-auto form-styling"  controlId="exampleForm.ControlInput1">
         <Form.Label><b>Full Name</b></Form.Label>
-        <Form.Control type="text" placeholder="" onChange={handleChange} name="fullName" value={shippingDetails.fullName} />
+        <Form.Control type="text" placeholder="" onChange={handleChange}  name="fullName" value={shippingDetails.fullName} />
       </Form.Group>
-      <Form.Group className="mb-3 mt-2 w-25 mx-auto"  controlId="exampleForm.ControlInput1">
+      <Form.Group className="mb-3 mt-2 w-25 form-styling mx-auto"  controlId="exampleForm.ControlInput1">
         <Form.Label><b>Address</b></Form.Label>
-        <Form.Control type="city" placeholder="" onChange={handleChange} name="address" value={shippingDetails.address} />
+        <Form.Control type="city" placeholder="" onChange={handleChange} name="address"  value={shippingDetails.address} />
       </Form.Group>
-      <Form.Group className="mb-3 mt-2 w-25 mx-auto"  controlId="exampleForm.ControlInput1">
+      <Form.Group className="mb-3 mt-2 w-25 form-styling mx-auto"  controlId="exampleForm.ControlInput1">
         <Form.Label><b>City</b></Form.Label>
-        <Form.Control type="text" placeholder="" onChange={handleChange} name="city" value={shippingDetails.city} />
+        <Form.Control type="text" placeholder="" onChange={handleChange} name="city"   value={shippingDetails.city} />
       </Form.Group>
-      <Form.Group className="mb-3 mt-2 w-25 mx-auto"  controlId="exampleForm.ControlInput1">
+      <Form.Group className="mb-3 mt-2 w-25 form-styling  mx-auto"  controlId="exampleForm.ControlInput1">
         <Form.Label><b>Postal Code</b></Form.Label>
-        <Form.Control type="number" placeholder="" onChange={handleChange} name="postalcode" value={shippingDetails.postalcode}/>
+        <Form.Control type="number" placeholder="" onChange={handleChange} name="postalcode"  value={shippingDetails.postalcode}/>
       </Form.Group>
-      <Form.Group className="mb-3 mt-2 w-25 mx-auto"  controlId="exampleForm.ControlInput1">
+      <Form.Group className="mb-3 mt-2 w-25 form-styling mx-auto"  controlId="exampleForm.ControlInput1">
         <Form.Label><b>Country</b></Form.Label>
-        <Form.Control type="text" placeholder="" onChange={handleChange} name="country" value={shippingDetails.country}/>
+        <Form.Control type="text" placeholder="" onChange={handleChange} name="country"  value={shippingDetails.country}/>
       </Form.Group>
       <p className='text-center text-dark'>Choose location on map</p>
       <Button type="submit" style={{marginLeft:"38%"}} className='mb-3' variant="warning">Continue</Button>{' '}    

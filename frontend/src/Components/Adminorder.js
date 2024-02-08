@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import { API_BASE_URL } from '../config';
 import axios from "axios";
+import "../Css/adminorder.css";
 
 
 const Adminorder = () => {
@@ -32,32 +33,40 @@ const Adminorder = () => {
   return (
     <> 
     <h1 className='text-center' style={{marginTop:"5rem"}}>Adminorder</h1>
-        <Table responsive striped bordered hover className='w-75 mx-auto' variant="dark" >
-      <thead >
-        <tr>
-          <th className='text-center'>#Order Id</th> 
-          <th className='text-center'>customerId: </th>
-          <th className='text-center'>Placed at</th>
-          {/* <th className='text-center'>Order Image</th> */}
-          <th className='text-center'>Order Price</th>
+    <div className="container">
+        <div className="row bg-dark order-row-style" style={{height:"3rem"}}>
+          <div className="col-md-3 col-3 text-center fs-2 order-row-design">#Order Id</div>
+          <div className="col-md-3 col-3 text-center fs-2 order-row-design">#Customer Id</div>
+          <div className="col-md-3 col-3 text-center fs-2 order-row-design">Order Info</div>
+          <div className="col-md-3 col-3 text-center fs-2 order-row-design">Order Price</div>
+        </div>
+        {orders.map((order, index) => {
+          return (
+            <div className="row mt-2" key={index}>
+              <div className="col-md-3 col-3 text-center order-id-font-size order-row-design">#{order._id}</div>
+              <div className="col-md-3 col-3 text-center order-id-font-size order-row-design">{order.customerId}</div>
+              {order.products.map((product) => (
+                <div className="col-md-3 col-3 text-center order-row-design" key={product._id}>
+                  <img
+                    src={product.productRef.image}
+                    className="image-responsive"
+                    alt={product.name}
+                    style={{ width: "8vw", height: "20vh" }}
+                  />
+                  <p>{product.productRef.title}</p>
+                </div>
+              ))}
 
-        </tr>
-      </thead>
-      <tbody>
-        {orders.map((order)=>{
-            return(
-                <tr key={order._id}>
-                <td className='text-center'>#{order._id}</td>
-                <td className='text-center'>{order.customerId}</td>
-                <td className='text-center'>24 feb 2014</td>
-                {/* <td className='text-center'>womens.jpg</td> */}
-                <td className='text-center'>${order.amount}</td>         
-              </tr> 
-            )
+              <div className="col-md-3 col-3  text-center order-row-design">${order.amount}</div>
+            </div>
+          );
         })}
-             
-      </tbody>
-    </Table>
+       
+        
+               
+      </div>
+       
+
  
     </>
   )

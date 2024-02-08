@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 const PaypalPayment = ({ orderItems }) => {
   const navigate = useNavigate();
   const dispatch= useDispatch();
-  const [paidFor, setPaidFor] = useState("");
+
   // Construct the cart array dynamically based on the actual items in the user's cart
   const products = orderItems;
 
@@ -54,7 +54,10 @@ const PaypalPayment = ({ orderItems }) => {
       console.log("response is" , res.data);
       if (res.status === 200) {
         console.log("response on paypal payment");
-        setPaidFor("paid");       
+        dispatch({ type: CLEAR_CART }); // Dispatch the clearCart action here
+        //display the success message       
+        navigate("/");  
+        toast.success("thank you for your purchase");     
        
        
       }
@@ -64,13 +67,7 @@ const PaypalPayment = ({ orderItems }) => {
     }
     //refresh user's account and the subscription status
 
-    if (paidFor=="paid") {
-      console.log("Cart is cleared");
-      dispatch({ type: CLEAR_CART }); // Dispatch the clearCart action here
-      //display the success message
-      toast.success("thank you for your purchase");
-      navigate("/");
-    }
+   
   };
   return (
     <>

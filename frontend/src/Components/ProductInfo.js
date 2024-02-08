@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { API_BASE_URL } from '../config';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import "../Css/productinfo.css"
 
 const ProductInfo = () => {
   const [newProduct, setNewProduct]= useState({
@@ -63,7 +64,7 @@ const ProductInfo = () => {
   return (
     <>
     <h1 className='text-center bg-black text-white' style={{marginTop:"6rem"}}>Add Product Information</h1>
-     <Form className=' mx-auto  w-25' encType="multipart/form-data" onSubmit={handleProductSubmit}>
+     <Form className=' mx-auto  w-25 admin-product-info ' encType="multipart/form-data" onSubmit={handleProductSubmit}>
       <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
         <Form.Label>Product Name:</Form.Label>
         <Form.Control type="text" placeholder="enter product name" name="pname" value={newProduct.pname} onChange={handleProductChange} />

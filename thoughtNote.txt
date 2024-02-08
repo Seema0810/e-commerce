@@ -1,0 +1,166 @@
+To understand the flow of code and debugging chatGpt is used.
+for search functionality the code is taken from the chatGpt. 
+
+===================
+E-commmerce
+====================
+
++++++++++++++
+FRONTEND:
+-----------
+
+***To run the frontend {npm start} command is used.
+
+Homepage: contains// Navbar/HomeInage/Featured Products/ Footer// .
+
+Navbar:
++++++++
+-It contains a buutton in left with dropdown having kids and women. when cilck on women button it will open all products page.
+-there is logo businice when clicked it will take you to the homepage.
+-there is a search bar when items searched and clicked on the serach button the item you searched will open on the SearchPage.js.
+-then there are 3 buttons cart/ order history/ admin.
+-when clicked on cart buttton cart page will open if customer is authorized.
+-when clicked on order history page it will the show the customer the item purchased.
+- when clicked on admin it will take you to the login page where admin have to login and then adminProduct page will open in which admin can //add the product// delete the product// and also view the orders placed.
+
+Homecover:
+++++++++++
+- A simple Homecover image is there.
+
+Slider:
++++++++
+-In this component, when you cliked on any card it will take you to the singleProduct page that will show the complete details of the product.
+
+
+Footer:
++++++++
+-A simple footer component is there.
+
+singleProduct page:
+*********************
+On this component when clicked on the add to cart button the item will be added in the cart models in the backend and will open the cart page if you are an authorized user. 
+if not then will show you the login component. and after successful login will take you to the cart page.
+And no. of items added in the cart will be shown in the cart button in navbar.
+
+Cart Page Component:
+********************
+In this component, there are two card one will show the products details and the other will show the total amount.
+one can increase and decrease the no. of items and also delete the particular product. 
+when one clicked on the proceed to checkout button,   it will ask for the shipping details where a form will opened . after submitting this form payment.js component will open which will ask for the payment options stripe
+and paypal payment. i have done paypal integration using npm library paypal/js so select the paypal and then continue after this final page will open that is order.js to complete the purchase. 
+
+order.js:
+***************
+on order.js page, you will see the shipping details of a customer  and the type of payment and details of product that we are going to purchase and the orderamount with paypal button . when clicked on paypal button 
+it will show you the login details where it required the business account email id and password that are created when cfreating an account on paypal developer dashboard.
+after submitting the details it will show payment option of paypal and click on continue then payment will be done and the amount will be deducted from your business account.
+the payment functionality is working fine.
+after payment is done order will be created and store in the order model in the database. after order is placed it will navigate to the homepage. 
+
+// the code of paypal integration is on paypalpayment.js component. 
+
+ADMIN:
+********
+when clicked on admin button it will take you to the product info component where all the products in database will be shown and which you can delete and there is two buttons **Add Order** and **view order**.
+-On click on *add order* butoon it will open a form where product details can be added and store these details of product in the product model.
+-On click on *view order* admin can view the products that are placed. 
+
++++++++++++++
+BACKEND:
++++++++++++++
+
+-Backend starts from the server file to run the server [nodemon server] command is used.
+-for cross-origin requests cors is installed for mongodb connection mongoose is used.
+-".dotenv is used to load the environment variables" and there is .env file which contains:
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+PORT=5000
+MONGODB_URL=mongodb://localhost:27017/EcommerceDB 
+JWT_SECRET=jaljd94756hhksajfksjf68436573kahd
+CLIENT_ID=AeIj4h4SacNfQJ3ZW9c81byVG7V_tq78UpXMahGsxnmFEaylD2akAPjXhzOCJHuG-uLJMDdJBdkezXtS
+APP_SECRET=EBYJNdStEeX3YUdA50HBOGX-MMGCkALgryzyY2IbQT0K4_gqW8AXnY2n0RNVrJj15VeMMRnkGl1tNVEv
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+??Routes Folder contains:-
+____________________________
+_____________________________
+
+*cart_routes.js
+*file_routes.js
+*order_routes.js
+*seedProduct_routes.js
+*user_routes.js
+
+??Middleware folder contains:-
+_______________________________
+_______________________________
+**protectedresource.js- in this file i have used ""json web token""  which is used for verifying and creating the token.
+
+??models Folder contains:-
+-------------------------
+-----------------------------
+* Customer_model.js
+*products_models.js
+*order_models.js
+*cart_model.js
+
+**********************************************************************************
+??Uploads folder which contains the file that are uploaded from the frontend.
+-multer is used for uploading the multipart/form-data.
+-In file_routes.js multer code is available to upload and download the file.  
+**********************************************************************************
+
+User_routes.js:-
+++++++++++++++++
+-this file contains the endpoint for creating the signup customer where bcryptjs is used to bycrypt the password.  
+- created an endpoint to login of customer. and **json web token** is used to create the token.  
+- created an endpoint  for seed admin where
+        name:"John Doe", 
+       email:"johndoe@gmail.com",
+       password:"JohnDoe@123",
+       confirmPassword:"JohnDoe@123", 
+       isAdmin:true 
+- created and endpoint for updating the Customer details 
+-created an endpoint for shipping details  
+-created an endpoint to get the shipping details  
+
+seedProduct_routes.js:-
++++++++++++++++++++++++++
+-This file contains the details that are related to the product.
+-created an endpoint for seed Products where i have taken 15 products.
+-created an endpoint to get all the products
+- creating an endpoint to get single product by id
+-creating an endpoint to search the items
+-creating the endpoint to add a product
+
+order_routes.js:-
+++++++++++++++++++
+-This file contains the information that are related to order.
+-creating an endpoint to create an order
+-creating an endpoint to get all the order bye admin
+-creating an endpoint to get  the order of particular customer 
+-creating an endpoint to get  the order using orderId
+
+
+cart_routes.js:-
+++++++++++++++++++
+-This file contains the information that are related  to cart.
+-creating an endpoint to add the product in cart
+- creating an endpoint to delete the product from the cart
+-create an endpoint to edit the card details
+- creating an endpoint for getting the cart details
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

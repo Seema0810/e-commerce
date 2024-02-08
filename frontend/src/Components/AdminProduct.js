@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
+import "../Css/adminproduct.css";
+
 const AdminProduct = () => {
   const [products, setProducts] = useState([]);
   const token = localStorage.getItem("token");
@@ -58,7 +60,7 @@ const AdminProduct = () => {
             borderTopLeftRadius: "5rem",
           }}
           variant="dark"
-          className="btn-md"
+          className="btn-md admin-btn-add"
         >
           Add Product
         </Button>
@@ -73,24 +75,25 @@ const AdminProduct = () => {
             borderTopLeftRadius: "5rem",
           }}
           variant="dark"
-          className="btn-md"
+          className="btn-md admin-btn-view"
         >
           View Orders
         </Button>
       </Link>
       <Container>
         <Row className="mt-5">
-          <Col md={10} className="mx-5">
+         
             <h2 className="mt-5">Product Information:</h2>
             {products.map((product) => {
               return (
-                <Card className="mt-2" key={product._id}>
+                <Col md={10} xs={12} className="mx-5 admin-product-margin">
+                <Card className="mt-3 admin-card" key={product._id}>
                   <Card.Body>
                     <Row>
-                      <Col md={6} className="d-inline-flex">
+                      <Col md={6} xs={12} className="d-inline-flex">
                         <img
                           src={product.image.startsWith('http') ? product.image : `${API_BASE_URL}${product.image}`}
-                          className="border border-2 p-2 img-fluid rounded"
+                          className="border border-2 p-2 img-fluid rounded admin-product-image"
                           style={{ height: "8rem", width: "8rem" }}
                           alt=""
                         />
@@ -99,16 +102,16 @@ const AdminProduct = () => {
                           //   style={{ fontSize: "13px" }}
                           className="mt-5 mx-3 fs-6"
                         >
-                          <b>{product.title}</b>
+                          <b>{product.title.slice(0,20)}</b>
                         </a>
                       </Col>
 
-                      <Col md={1} className="d-inline-flex mx-4 ">
-                        <span className="m-2 fs-3 mt-5">${product.price}</span>
+                      <Col md={1} xs={12} className="d-inline-flex admin-product-margin mx-4 ">
+                        <span className=" admin-product-price m-2 fs-3 mt-5">${product.price}</span>
                       </Col>
-                      <Col md={3} className="mx-5">
+                      <Col md={3} xs={12} className="mx-5">
                         <button
-                          className="btn btn-danger border-0  mt-5 float-end rounded-end-circle"
+                          className="btn btn-danger border-0  mt-5 float-end rounded-end-circle admin-delete-btn"
                           onClick={() => handleDelete(product._id)}
                         >
                           <i class="fa-solid fa-trash"></i>
@@ -117,9 +120,10 @@ const AdminProduct = () => {
                     </Row>
                   </Card.Body>
                 </Card>
+                </Col>
               );
             })}
-          </Col>
+          
         </Row>
         <p className="text-center m-5 text-secondary">
           <b>All rights reserved</b>

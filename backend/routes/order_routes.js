@@ -35,7 +35,8 @@ router.post("/api/createorder", auth, async(req,res)=>{
 router.get("/api/order", async(req,res)=>{
     try
     {
-        const orders= await Order.find();
+        // Use populate to include product details in the orders
+    const orders = await Order.find().populate('products.productRef'); // Assuming 'products' is the array of products in your Order model, and 'product' is the reference in the array
         console.log(orders);
         res.status(200).json(orders);
     }
@@ -50,7 +51,7 @@ router.get("/api/order/custId", auth, async(req,res)=>{
     const custId= req.user._id;
     try
     {
-        const orders= await Order.find({customerId:custId});
+        const orders= await Order.find({customerId:custId}).populate('products.productRef');
         console.log(orders);
         res.status(200).json(orders);
     }

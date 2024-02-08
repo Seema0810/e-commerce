@@ -7,6 +7,7 @@ import { API_BASE_URL } from "../config";
 import { useSelector, useDispatch } from "react-redux";
 import { UPDATE_CART } from "../redux/actions/types";
 import PaypalPayment from "./PaypalPayment";
+import "../Css/order.css"
 
 const Order = () => {
   const dispatch = useDispatch();
@@ -63,24 +64,27 @@ const Order = () => {
     <>
       <Container>
         <Row style={{ marginTop: "50px" }}>
-          <Col md={8}>
+          <Col md={8} xs={12}>
             <h2 className="mt-5">Preview Order</h2>
-            <Card className="mt-3">
+            <Col md={8} xs={12}>
+            <Card className="card-order">
               <Card.Body>
                 <h5>
                   <b>Shipping</b>
                 </h5>
-                <p style={{ lineHeight: "0.8" }}>
+                <p style={{ lineHeight: "0.7" }}>
                   <b>Name:</b>
                   {shippingData.name}
                 </p>
-                <p style={{ lineHeight: "0.8" }}>
+                <p style={{ lineHeight: "0.9" }}>
                   <b>Address:</b>
                   {shippingData.address}
                 </p>
                 <a href="/">Edit</a>
               </Card.Body>
             </Card>
+            </Col>
+            <Col md={8} xs={12}>
             <Card className="mt-3">
               <Card.Body>
                 <h5>
@@ -92,8 +96,10 @@ const Order = () => {
                 <a href="/">Edit</a>
               </Card.Body>
             </Card>
-            {orderItems.map((item) => (
-              <Card className="mt-3" key={item.index}>
+            </Col>
+            {orderItems.map((item, index) => (
+               <Col md={8} xs={12}  key={index}>
+              <Card className="mt-3 card-order">
                 <Card.Body>
                   <h5>
                     <b>Items</b>
@@ -120,9 +126,10 @@ const Order = () => {
                 
                 </Card.Body>
               </Card>
+              </Col>
             ))}
           </Col>
-          <Col md={4}>
+          <Col md={4} xs={12}>
             <Card className="mt-5">
               <Card.Body>
                 <p>
@@ -154,10 +161,10 @@ const Order = () => {
                     <b>${totalOrderAmount}</b>
                   </span>
                 </p>
-              </Card.Body>
-             
-                  <PaypalPayment orderItems= {orderItems}/>
-                
+              </Card.Body>   
+              <Button className="paypal-button">        
+                  <PaypalPayment orderItems= {orderItems}  />
+                  </Button>  
            
             </Card>
           </Col>

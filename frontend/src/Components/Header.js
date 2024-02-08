@@ -33,6 +33,8 @@ const Header = () => {
   localStorage.setItem("cart", addProducts);
   console.log("cart icons products are", addProducts);
 
+  
+
   // getting the total no. of items
   const getTotalItems = () => {
     return addProducts.reduce((total, product) => {
@@ -104,10 +106,15 @@ const Header = () => {
                 </Dropdown.Menu>
               </Dropdown>
 
-              <Navbar.Brand href="#home">Businice</Navbar.Brand>
+              <Navbar.Brand href="/">Businice</Navbar.Brand>
             </Col>
-            <Col xs={6} md={4}>
-              <InputGroup className="justify-content-center ">
+            <Col md={10} xs={12}>
+              <Row>           
+            <Col className="pe-5" >
+              <Navbar.Toggle aria-controls="basic-navbar-nav" className="position-absolute top-0 end-0 mt-1"/>
+              <Navbar.Collapse id="basic-navbar-nav" className="navlink-style">
+              <Col xs={12} md={6}>
+              <InputGroup >
                 <Form.Control
                   placeholder="Search here..."
                   aria-label="Recipient's username"
@@ -124,11 +131,8 @@ const Header = () => {
                 </Button>
               </InputGroup>
             </Col>
-
-            <Col xs={6} md={6}>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" className="position-absolute top-0 end-0 mt-1"/>
-              <Navbar.Collapse id="basic-navbar-nav" className="navlink-style">
-                <Nav className="mx-auto ">
+                <Col  xs={12} md={6}>
+                <Nav className="mx-auto toggle-style  ">
                 <Nav.Link href="/orderhistory">
                     <button className=" border border-o " onClick={handleCart}>
                      History 
@@ -149,12 +153,15 @@ const Header = () => {
                     </button>
                   </Nav.Link>
                   <Nav.Link href="/login">
-                  <button className=" border border-o " onClick={handleLogout}>
+                  <button className=" border border-o  " onClick={handleLogout}>
                      {token && "Logout"}
                     </button>
                     </Nav.Link>
                 </Nav>
+                </Col>
               </Navbar.Collapse>
+            </Col>
+            </Row>
             </Col>
           </Navbar>
         </Row>

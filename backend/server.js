@@ -29,6 +29,9 @@ require('./models/cart_models')// registering the Cart Model
 
 app.use(cors());             //allow controlled access to resources on a different domain
 app.use(express.json());
+
+app.use('/uploads', express.static('uploads'));
+
 // route to download the file
 app.get("/files/:filename", downloadFile);
 app.use(require('./routes/user_routes')); //user routes

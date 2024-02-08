@@ -10,18 +10,20 @@ const SearchPage = () => {
     <>
        <Container>
         <Row style={{ marginTop: "50px" }}>
-          <Col md={11} className="mx-5">
+          <Col md={11} xs={12} >
             <h2 className="mt-5">Product Information:</h2>
+           
             {searchedProducts.map((searchedProduct, index)=>{
                 return(
-                    <Card key={index}>
+                  <Col md={11} xs={12}  key={index} >
+                    <Card>
                     <Card.Body>
                       <Row>
-                        <Col md={6} className="d-inline-flex">
+                        <Col md={6} xs={5} className="d-inline-flex">
                           <img
                             src={searchedProduct.image}
                             className="border border-2 p-2 img-fluid rounded"
-                            style={{ height: "8rem", width: "8rem" }}
+                            style={{ height: "6rem", width: "8rem" }}
                             alt=""
                           />
                           <a
@@ -29,14 +31,14 @@ const SearchPage = () => {
                           //   style={{ fontSize: "13px" }}
                             className="mt-5 mx-3 fs-6"
                           >
-                            <b>{searchedProduct.title}</b>
+                            <b>{searchedProduct.title.slice(0,20)}</b>
                           </a>
                         </Col>
                        
-                        <Col md={1} className="d-inline-flex mx-4 ">
+                        <Col md={1} xs={1} className="d-inline-flex mx-4 ">
                           <span className="m-2 fs-3 mt-5">${searchedProduct.price}</span>
                         </Col>
-                        <Col md={1} className="mx-5">
+                        <Col md={1} xs={1} className="mx-5">
                           <button className="btn btn-danger border-0  mt-5 rounded-end-circle">
                              View
                           </button>
@@ -44,9 +46,10 @@ const SearchPage = () => {
                       </Row>
                     </Card.Body>
                   </Card>
+                  </Col>
                 )
             })}
-           
+         
           </Col>
         </Row>
         <p className="text-center m-5 text-secondary">
