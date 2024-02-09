@@ -9,7 +9,11 @@ E-commmerce
 FRONTEND:
 -----------
 
+//For state management redux is used.Redux folder contains:actions folder-> types.js, combine reducer.js, reducer.js. 
+
 ***To run the frontend {npm start} command is used.
+
+*On click on businice will be taken to home page. 
 
 Homepage: contains// Navbar/HomeInage/Featured Products/ Footer// .
 
@@ -56,6 +60,7 @@ it will show you the login details where it required the business account email 
 after submitting the details it will show payment option of paypal and click on continue then payment will be done and the amount will be deducted from your business account.
 the payment functionality is working fine.
 after payment is done order will be created and store in the order model in the database. after order is placed it will navigate to the homepage. 
+--From the personal account the amount is deducted and in the business account the amount is increased.
 
 // the code of paypal integration is on paypalpayment.js component. 
 

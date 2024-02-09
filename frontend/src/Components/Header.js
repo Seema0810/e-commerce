@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../Css/header.css";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import {
@@ -19,19 +19,30 @@ import {
 } from "react-bootstrap";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { API_BASE_URL } from "../config";
 import axios from "axios";
+import { UPDATE_CART } from "../redux/actions/types";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import SearchPage from "./SearchPage";
 
 const Header = () => {
   const [searchItem, setSearchItem] = useState();
+  const [cartProducts, setCartProducts] = useState([]);
+
   const [searchedProducts, setSearchedProducts] = useState([]);
   const token= localStorage.getItem("token");
   const navigate = useNavigate();
+  const dispatch= useDispatch();
   const addProducts = useSelector((state) => state.cart.cartItems);
   localStorage.setItem("cart", addProducts);
   console.log("cart icons products are", addProducts);
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + token,
+  };
 
   
 
@@ -40,7 +51,33 @@ const Header = () => {
     return addProducts.reduce((total, product) => {
       return total + product.quantity;
     }, 0);
+  }; 
+  // getting the cart details
+  const getProductDetail = async () => {
+    try {
+      const res = await axios.get(`${API_BASE_URL}/api/cart`, { headers });
+      console.log("cart response of product", res.data);
+      if (res.status === 200 && res.data.cart && res.data.cart.products) {
+        // Check if res.data.cart and res.data.cart.products are not null/undefined
+        dispatch({ type: UPDATE_CART, payload: res.data.cart.products });
+        setCartProducts(res.data.cart.products);
+
+        console.log("cart product details is", res.data.cart.products);
+      } else {
+        toast.error("NO item is in the cart");
+        navigate("/cart");
+        // Handle the case where the response does not have the expected structure
+        console.error("Invalid response structure from the server");
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
+  useEffect(() => {
+    getProductDetail();
+  }, []);
+
+
 
   const itemsInCart= getTotalItems();
   const handleCart = () => {
@@ -74,7 +111,7 @@ const Header = () => {
   //handling logout functionality here
   const handleLogout =()=>{
     localStorage.removeItem("token");
-    navigate("/")
+    navigate("/");
   }
 
   return (
